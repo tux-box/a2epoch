@@ -17,7 +17,9 @@ services:
     restart: unless-stopped
 
   dayz-epoch:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.runtime
     container_name: dayz-epoch-server
     depends_on:
       - mysql

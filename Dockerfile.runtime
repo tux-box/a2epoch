@@ -32,21 +32,19 @@ RUN mkdir -p /home/dayz/steamcmd && \
     cd /home/dayz/steamcmd && \
     wget -qO- 'https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz' | tar zx
 
-# 4. Copy server files and scripts first
+# 4. Create server directory structure
+RUN mkdir -p /home/dayz/server/{cfgdayz,sql,logs}
+
+# 5. Copy server files and scripts
 COPY --chown=dayz:dayz config/ /home/dayz/server/cfgdayz/
 COPY --chown=dayz:dayz sql/ /home/dayz/server/sql/
 COPY --chown=dayz:dayz scripts/ /home/dayz/server/
 
-# 5. Set permissions and compile utilities
+# 6. Set permissions and compile utilities
 RUN chmod +x /home/dayz/server/*.sh /home/dayz/server/*.pl && \
     cd /home/dayz/server && \
     gcc -o tolower tolower.c && \
-    ./tolower && \
-    rm tolower.c tolower
-
-# 6. Install Arma 2 and DayZ Epoch (moved after permission setup)
-RUN cd /home/dayz/server && \
-    ./install_server.sh
+    rm tolower.c
 
 # 7. Set up the environment
 ENV LD_LIBRARY_PATH=/home/dayz/server
@@ -55,6 +53,9 @@ WORKDIR /home/dayz/server
 # 8. Expose the server port
 EXPOSE 2302/udp
 
-# 9. Set the entrypoint
-ENTRYPOINT ["/home/dayz/server/entrypoint.sh"]
+# 9. Create a runtime entrypoint that handles Steam installation
+COPY --chown=dayz:dayz scripts/runtime_entrypoint.sh /home/dayz/server/
+RUN chmod +x /home/dayz/server/runtime_entrypoint.sh
 
+# 10. Set the entrypoint
+ENTRYPOINT ["/home/dayz/server/runtime_entrypoint.sh"]
