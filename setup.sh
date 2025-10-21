@@ -41,12 +41,30 @@ fi
 echo
 echo "Checking configuration..."
 
-# Source the .env file to check variables
-if [ -f ".env" ]; then
-    source .env
+# Function to safely read .env file
+read_env_var() {
+    local var_name="$1"
+    local var_value=""
     
-    # Check required variables
+    if [ -f ".env" ]; then
+        # Read the variable value from .env file, handling quotes and comments
+        var_value=$(grep "^${var_name}=" .env 2>/dev/null | head -n1 | cut -d'=' -f2- | sed 's/^["'\'']//' | sed 's/["'\'']$//')
+    fi
+    
+    echo "$var_value"
+}
+
+# Check required variables
+if [ -f ".env" ]; then
     missing_vars=()
+    
+    STEAM_USERNAME=$(read_env_var "STEAM_USERNAME")
+    STEAM_PASSWORD=$(read_env_var "STEAM_PASSWORD")
+    MYSQL_ROOT_PASSWORD=$(read_env_var "MYSQL_ROOT_PASSWORD")
+    MYSQL_PASSWORD=$(read_env_var "MYSQL_PASSWORD")
+    SERVER_ADMIN_PASSWORD=$(read_env_var "SERVER_ADMIN_PASSWORD")
+    RCON_PASSWORD=$(read_env_var "RCON_PASSWORD")
+    SERVER_PORT=$(read_env_var "SERVER_PORT")
     
     [ -z "$STEAM_USERNAME" ] && missing_vars+=("STEAM_USERNAME")
     [ -z "$STEAM_PASSWORD" ] && missing_vars+=("STEAM_PASSWORD")
