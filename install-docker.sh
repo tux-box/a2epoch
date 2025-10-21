@@ -4,3 +4,4 @@ echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] 
 sudo apt update
 sudo apt install docker-ce -y
 sudo usermod -aG docker $USER
+sudo apt install docker-compose-plugin -y
