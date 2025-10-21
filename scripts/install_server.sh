@@ -3,9 +3,9 @@
 # Exit on error
 set -e
 
-# Steam credentials (replace with your own)
-STEAM_USERNAME="your_steam_username"
-STEAM_PASSWORD="your_steam_password"
+# Steam credentials from environment variables
+STEAM_USERNAME="${STEAM_USERNAME}"
+STEAM_PASSWORD="${STEAM_PASSWORD}"
 
 # Arma 2 App IDs
 APP_ID_ARMA2=33900
@@ -13,12 +13,19 @@ APP_ID_ARMA2_OA=33910
 APP_ID_ARMA2_BAF=33930
 APP_ID_ARMA2_BETA=219540
 
-# DayZ Epoch Download URLs (replace with direct links if they expire)
+# DayZ Epoch Download URLs
 DAYZ_EPOCH_SERVER_URL="https://drive.google.com/uc?export=download&id=1jDn86sfTwcRae4NZgHK76k_CaY1jOUP2"
 DAYZ_EPOCH_SERVER_PASSWORD="123456"
 
 # Installation directory
 INSTALL_DIR="/home/dayz/server"
+
+# Validate Steam credentials
+if [ -z "$STEAM_USERNAME" ] || [ -z "$STEAM_PASSWORD" ]; then
+    echo "Error: STEAM_USERNAME and STEAM_PASSWORD must be set in environment variables"
+    echo "Please check your .env file or docker-compose environment configuration"
+    exit 1
+fi
 
 # 1. Install Arma 2 using SteamCMD
 echo "Installing Arma 2..."

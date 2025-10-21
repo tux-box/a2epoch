@@ -47,7 +47,8 @@ RUN chmod +x /home/dayz/server/*.sh /home/dayz/server/*.pl && \
     cd /home/dayz/server && \
     gcc -o tolower tolower.c && \
     ./tolower && \
-    rm tolower.c tolower
+    rm tolower.c tolower && \
+    chmod +x /home/dayz/server/generate_configs.sh
 
 # 7. Set up the environment
 ENV LD_LIBRARY_PATH /home/dayz/server

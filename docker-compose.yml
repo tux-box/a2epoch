@@ -5,10 +5,10 @@ services:
     image: mysql:5.7
     container_name: dayz-epoch-mysql
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: dayz_epoch
-      MYSQL_USER: dayz
-      MYSQL_PASSWORD: dayz
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - mysql_data:/var/lib/mysql
       - ./sql/database.sql:/docker-entrypoint-initdb.d/database.sql
@@ -22,16 +22,23 @@ services:
     depends_on:
       - mysql
     ports:
-      - "2302:2302/udp"
+      - "${SERVER_PORT:-2302}:2302/udp"
     volumes:
       - ./config:/home/dayz/server/cfgdayz
       - ./logs:/home/dayz/server/logs
       - ./missions:/home/dayz/server/mpmissions
     environment:
-      - MYSQL_HOST=mysql
-      - MYSQL_USER=dayz
-      - MYSQL_PASSWORD=dayz
-      - MYSQL_DATABASE=dayz_epoch
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - SERVER_HOSTNAME=${SERVER_HOSTNAME}
+      - SERVER_PASSWORD=${SERVER_PASSWORD}
+      - SERVER_ADMIN_PASSWORD=${SERVER_ADMIN_PASSWORD}
+      - SERVER_MAX_PLAYERS=${SERVER_MAX_PLAYERS}
+      - RCON_PASSWORD=${RCON_PASSWORD}
+      - STEAM_USERNAME=${STEAM_USERNAME}
+      - STEAM_PASSWORD=${STEAM_PASSWORD}
     restart: unless-stopped
 
 volumes:

@@ -17,14 +17,41 @@ Before building and running this container, you need:
 
 ## Quick Start
 
-### 1. Configure Steam Credentials
+### Option 1: Automated Setup (Recommended)
 
-Edit the `scripts/install_server.sh` file and replace the placeholder Steam credentials:
+Use the provided setup script for guided configuration:
 
 ```bash
-STEAM_USERNAME="your_steam_username"
-STEAM_PASSWORD="your_steam_password"
+# Clone or download this repository
+cd dayz-epoch-docker
+
+# Run the setup script
+./setup.sh
 ```
+
+The setup script will:
+- Create and help you configure the `.env` file
+- Validate your configuration
+- Check Docker installation
+- Optionally start the server
+
+### Option 2: Manual Setup
+
+Copy the example environment file and configure your settings:
+
+```bash
+# Copy the example file
+cp .env.example .env
+
+# Edit the .env file with your actual values
+nano .env
+```
+
+**Required Configuration**:
+- Steam credentials (STEAM_USERNAME, STEAM_PASSWORD)
+- Database passwords (MYSQL_ROOT_PASSWORD, MYSQL_PASSWORD)
+- Server admin password (SERVER_ADMIN_PASSWORD)
+- RCon password (RCON_PASSWORD)
 
 ### 2. Build and Run
 
