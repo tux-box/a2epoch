@@ -17,8 +17,7 @@ RUN apt-get update && \
     libdbd-mysql-perl \
     mysql-client \
     perl \
-    screen \
-    gcc && \
+    screen && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -40,11 +39,12 @@ COPY --chown=dayz:dayz config/ /home/dayz/server/cfgdayz/
 COPY --chown=dayz:dayz sql/ /home/dayz/server/sql/
 COPY --chown=dayz:dayz scripts/ /home/dayz/server/
 
-# 6. Set permissions and compile utilities
-RUN chmod +x /home/dayz/server/*.sh /home/dayz/server/*.pl && \
+# 6. Set permissions and copy precompiled tolower binary
+COPY --chown=dayz:dayz tolower_binary /home/dayz/server/tolower
+RUN chmod +x /home/dayz/server/*.sh /home/dayz/server/*.pl /home/dayz/server/tolower && \
     cd /home/dayz/server && \
-    gcc -o tolower tolower.c && \
-    rm tolower.c
+    ./tolower && \
+    rm -f tolower.c
 
 # 7. Set up the environment
 ENV LD_LIBRARY_PATH=/home/dayz/server

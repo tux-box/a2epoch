@@ -19,7 +19,7 @@ services:
   dayz-epoch:
     build:
       context: .
-      dockerfile: Dockerfile.runtime
+      dockerfile: dockerfile.runtime
     container_name: dayz-epoch-server
     depends_on:
       - mysql
