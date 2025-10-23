@@ -29,7 +29,7 @@ fi
 
 # 1. Install Arma 2 using SteamCMD
 echo "Installing Arma 2..."
-/home/dayz/steamcmd/steamcmd.sh +login $STEAM_USERNAME $STEAM_PASSWORD \
+/home/dayz/steamcmd/steamcmd +login $STEAM_USERNAME $STEAM_PASSWORD \
     +force_install_dir $INSTALL_DIR \
     +@sSteamCmdForcePlatformType windows \
     +app_update $APP_ID_ARMA2 validate \
